@@ -1,0 +1,33 @@
+Channels:
+ - defaults
+ - conda-forge
+ - pyg
+ - pytorch
+Platform: osx-arm64
+Collecting package metadata (repodata.json): ...working... done
+Solving environment: ...working... done
+
+## Package Plan ##
+
+  environment location: /opt/anaconda3/envs/FrugalAI
+
+  added / updated specs:
+    - nbformat
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    nbformat-5.10.4            |   py39hca03da5_0         139 KB
+    python-fastjsonschema-2.20.0|   py39hca03da5_0         251 KB
+    ------------------------------------------------------------
+                                           Total:         390 KB
+
+The following NEW packages will be INSTALLED:
+
+  nbformat           pkgs/main/osx-arm64::nbformat-5.10.4-py39hca03da5_0 
+  python-fastjsonsc~ pkgs/main/osx-arm64::python-fastjsonschema-2.20.0-py39hca03da5_0 
+
+
+Proceed ([y]/n)? 
