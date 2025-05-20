@@ -23,7 +23,7 @@ st.markdown(
     - $I_i$ = inference energy (kWh per 1K inferences)
     - $\alpha,\beta,\gamma$ = weights that sum to 1
 
-    The above formula normalizes the F1 score and energy consumptions first. The training and inference energy scores are then inverted so that lower energy consumption results in a higher score. 
+    The above formula first normalizes the F1 score and energy consumptions. The training and inference energy scores are then inverted so that lower energy consumption results in a higher score. 
     The final frugal rating is a weighted sum of these normalized values.
     """,
     unsafe_allow_html=True
@@ -37,9 +37,9 @@ st.sidebar.markdown(
     """
 )
 # Sliders for weights 
-alpha_input = st.sidebar.slider("Alpha (F1 weight)", 0.0, 1.0, 0.33, 0.01)
-beta_input = st.sidebar.slider("Beta (Training energy weight)", 0.0, 1.0, 0.33, 0.01)
-gamma_input = st.sidebar.slider("Gamma (Inference energy weight)", 0.0, 1.0, 0.34, 0.01)
+alpha_input = st.sidebar.slider("F1 weight", 0.0, 1.0, 0.33, 0.01)
+beta_input = st.sidebar.slider("Training energy weight", 0.0, 1.0, 0.33, 0.01)
+gamma_input = st.sidebar.slider("Inference energy weight", 0.0, 1.0, 0.34, 0.01)
 
 
 # Result upload
