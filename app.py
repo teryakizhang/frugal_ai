@@ -46,13 +46,14 @@ use_grid_factor = st.sidebar.checkbox(
     value=True,
     help="If unchecked, the energy consumption will be used to calculate the rating."
 )
+
 grid_factor = st.sidebar.number_input(
     "Grid emission factor (gCO2e per kWh)",
+    help="This is the average grid emission factor for your region. You can use [Electricity Maps](https://app.electricitymaps.com/map/72h/hourly) to find it",
     min_value=0.0,
     value=175.0,
-    step=0.01,
+    step=1.0,
     format="%.2f",
-    label_visibility="collapsed",
     disabled=not use_grid_factor,
 )
 
