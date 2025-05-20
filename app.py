@@ -37,9 +37,9 @@ st.sidebar.markdown(
     """
 )
 # Sliders for weights 
-alpha_input = st.sidebar.slider("F1 weight", 0.0, 1.0, 0.33, 0.01)
-beta_input = st.sidebar.slider("Training energy weight", 0.0, 1.0, 0.33, 0.01)
-gamma_input = st.sidebar.slider("Inference energy weight", 0.0, 1.0, 0.34, 0.01)
+alpha_input = st.sidebar.slider("F1 weight (α)", 0.0, 1.0, 0.33, 0.01)
+beta_input = st.sidebar.slider("Training energy weight (β)", 0.0, 1.0, 0.33, 0.01)
+gamma_input = st.sidebar.slider("Inference energy weight (γ)", 0.0, 1.0, 0.34, 0.01)
 
 use_grid_factor = st.sidebar.checkbox(
     "Use grid emission factor for energy consumption",
@@ -56,27 +56,45 @@ grid_factor = st.sidebar.number_input(
     format="%.2f",
     disabled=not use_grid_factor,
 )
+# F1 floor filter
+f1_floor = st.sidebar.slider(
+        "F1 minimum threshold", 0.0, 1.0, 0.5, 0.01,
+    )
+
+## Main body
+# Data upload or sample load
+# def initialize_session():
+#     if 'upload_path' not in st.session_state:
+#         st.session_state.upload_path = None
+# initialize_session()
+
+if 'df' not in st.session_state:
+    st.session_state.df = None
 
 
-# Result upload
 st.header("Upload your model results CSV")
-uploaded_file = st.file_uploader(
-    "CSV with columns: model_name, f1_score, training_energy_kwh, inference_energy_kwh",
-    type=["csv"]
-)
+if st.button("Load sample data"):
+    st.session_state.sample_data = "20250520_frugal_model_results.csv"
+    st.session_state.df = pd.read_csv(st.session_state.sample_data)
+    st.success("Sample data loaded")    
+if st.session_state.df is None:
+    uploaded_file = st.file_uploader(
+        "CSV with columns: model_name, f1_score, training_energy_kwh, inference_energy_kwh",
+        type=["csv"]
+    )
+    if uploaded_file:
+        st.session_state.df = pd.read_csv(uploaded_file)
+    else:
+        df = st.session_state.df
 
-if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file)
+
+if st.session_state.df is not None:
+    df = st.session_state.df
     required_cols = ["model_name", "f1_score", "training_energy_kwh", "inference_energy_kwh"]
     if not all(col in df.columns for col in required_cols):
         st.error(f"CSV must include columns: {required_cols}")
         st.stop()
 
-    # F1 floor filter
-    F_min_all, F_max_all = df['f1_score'].min(), df['f1_score'].max()
-    f1_floor = st.sidebar.slider(
-        "F1 minimum threshold", float(F_min_all), float(F_max_all), float(F_min_all), 0.01
-    )
     df = df[df['f1_score'] >= f1_floor]
     if df.empty:
         st.error("No models meet the F1 floor threshold.")
@@ -126,8 +144,8 @@ if uploaded_file is not None:
     st.dataframe(df_sorted[['model_name', 'frugal_rating']])
 
     # Bar chart
-    st.write("## Frugal Rating Bar Chart")
-    bar_chart = alt.Chart(df_sorted).mark_bar().encode(x=alt.X('model_name', sort=None), y='frugal_rating')
+    st.write("## Frugal Rating Ranking")
+    bar_chart = alt.Chart(df_sorted).mark_bar().encode(x=alt.X('model_name', sort=None, title="Model Name"), y=alt.Y('frugal_rating', title='Frugal Rating'))
     st.altair_chart(bar_chart, use_container_width=True)
 else:
     st.info("Upload a CSV file to get started.")
