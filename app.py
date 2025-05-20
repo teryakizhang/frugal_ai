@@ -6,29 +6,6 @@ st.set_page_config(page_title="Frugal Model Selector", layout="wide")
 
 st.title("🔋 Frugal AI Model Rating Tool")
 
-# Description with formula
-st.markdown(
-    r"""
-    **Frugal Rating Formula**:
-    
-    $$
-    \mathrm{frugal}_i = \alpha \frac{F_i - F_{\min}}{F_{\max} - F_{\min}} 
-    + \beta \Bigl(1 - \frac{T_i - T_{\min}}{T_{\max} - T_{\min}}\Bigr)
-    + \gamma \Bigl(1 - \frac{I_i - I_{\min}}{I_{\max} - I_{\min}}\Bigr)
-    $$
-    
-    where:
-    - $F_i$ = F1 score of model $i$
-    - $T_i$ = training energy (kWh)
-    - $I_i$ = inference energy (kWh per 1K inferences)
-    - $\alpha,\beta,\gamma$ = weights that sum to 1
-
-    The above formula first normalizes the F1 score and energy consumptions. The training and inference energy scores are then inverted so that lower energy consumption results in a higher score. 
-    The final frugal rating is a weighted sum of these normalized values.
-    """,
-    unsafe_allow_html=True
-)
-
 # Sidebar for config
 st.sidebar.header("Configuration")
 st.sidebar.markdown(
@@ -149,3 +126,26 @@ if st.session_state.df is not None:
     st.altair_chart(bar_chart, use_container_width=True)
 else:
     st.info("Upload a CSV file to get started.")
+
+# Description with formula
+st.markdown(
+    r"""
+    **Methodology**:
+    
+    $$
+    \mathrm{frugal}_i = \alpha \frac{F_i - F_{\min}}{F_{\max} - F_{\min}} 
+    + \beta \Bigl(1 - \frac{T_i - T_{\min}}{T_{\max} - T_{\min}}\Bigr)
+    + \gamma \Bigl(1 - \frac{I_i - I_{\min}}{I_{\max} - I_{\min}}\Bigr)
+    $$
+    
+    where:
+    - $F_i$ = F1 score of model $i$
+    - $T_i$ = training energy (kWh)
+    - $I_i$ = inference energy (kWh per 1K inferences)
+    - $\alpha,\beta,\gamma$ = weights that sum to 1
+
+    The above formula first normalizes the F1 score and energy consumptions. The training and inference energy scores are then inverted so that lower energy consumption results in a higher score. 
+    The final frugal rating is a weighted sum of these normalized values.
+    """,
+    unsafe_allow_html=True
+)
