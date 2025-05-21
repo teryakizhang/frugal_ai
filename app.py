@@ -5,6 +5,11 @@ import altair as alt
 st.set_page_config(page_title="Frugal Model Selector", layout="wide")
 
 st.title("🔋 Frugal AI Model Rating Tool")
+st.markdown(
+    """
+    This tool helps you select the most frugal AI model based on your chosen balance of F1 score and energy consumption during training and inference.
+    The original article is available [here](https://www.leafcode.ai/p/building-frugal-ai)."""
+)
 
 # Sidebar for config
 st.sidebar.header("Configuration")
